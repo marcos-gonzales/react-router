@@ -1,0 +1,72 @@
+import React, { useState, useEffect } from 'react'
+import './App.css'
+import Main from './components/Main'
+import Form from './components/Form'
+
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('form')
+  const [notes, setNotes] = useState()
+
+  console.log(currentPage)
+
+  useEffect(() => {
+    console.log('use effect is in use')
+    fetch('http://localhost:8080/getnotes')
+      .then((result) => result.json())
+      .then((fetchedNotes) => {
+        setNotes(fetchedNotes)
+      })
+  }, [currentPage])
+
+  const displayForm = () => {
+    setCurrentPage('form')
+  }
+
+  const getClasses = (index) => {
+    let result = ''
+
+    if (notes[index].completed === 1) result += 'completed'
+    if (index === currentPage) result += ' active'
+
+    return result
+  }
+
+  if (!notes) return <h1>Loading...</h1>
+
+  return (
+    <div className='container'>
+      <header>Notion</header>
+      <section>
+        <nav>
+          <span onClick={displayForm}>+</span>
+          {notes.map((note, index) => (
+            <span
+              key={notes[index].id}
+              className={getClasses(index)}
+              onClick={() => {
+                setCurrentPage(index)
+              }}
+            >
+              {note.title}
+            </span>
+          ))}
+        </nav>
+        {currentPage === 'form' ? (
+          <Form setCurrentPage={setCurrentPage} />
+        ) : (
+          notes[currentPage] && (
+            <Main
+              title={notes[currentPage].title}
+              content={notes[currentPage].content}
+              id={notes[currentPage].id}
+              slug={notes[currentPage].slug}
+              completed={notes[currentPage].completed}
+            />
+          )
+        )}
+      </section>
+    </div>
+  )
+}
+
+export default App
