@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-const Form = ({ setCurrentPage }) => {
-  const [title, setTitle] = useState('testing..')
-  const [slug, setSlug] = useState('testing..')
-  const [content, setContent] = useState('testing...')
+const Form = ({ setNotes }) => {
+  const [title, setTitle] = useState('')
+  const [slug, setSlug] = useState('')
+  const [content, setContent] = useState('')
   const [errors, setErrors] = useState()
 
   const body = {
@@ -28,7 +28,7 @@ const Form = ({ setCurrentPage }) => {
       .then((notes) => {
         if (notes.slug) {
           console.log('this is results after json()', notes)
-          setCurrentPage(notes.slug)
+          setNotes(notes.slug)
         }
         console.log(notes)
         setErrors(notes.errors)
@@ -54,7 +54,7 @@ const Form = ({ setCurrentPage }) => {
             placeholder='pet oswald...'
             type='text'
             name='title'
-            value={title}
+            value={title.value === 0 ? (title.style.color = 'red') : title}
             required={true}
             onChange={(e) => setTitle(e.target.value)}
           ></input>
@@ -65,7 +65,7 @@ const Form = ({ setCurrentPage }) => {
             placeholder='oswald...'
             type='text'
             name='slug'
-            value={slug}
+            value={slug.value === 0 ? (slug.style.color = 'red') : slug}
             required={true}
             onChange={(e) => setSlug(e.target.value)}
           ></input>
@@ -77,7 +77,9 @@ const Form = ({ setCurrentPage }) => {
             name='content'
             required={true}
             onChange={(e) => setContent(e.target.value)}
-            value={content}
+            value={
+              content.value === 0 ? (content.style.color = 'red') : content
+            }
           ></textarea>
           <button onClick={submitPostForm}>submit</button>
         </label>

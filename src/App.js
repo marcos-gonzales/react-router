@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Main from './components/Main'
+// import Main from './components/Main'
 import Form from './components/Form'
 import Note from './components/Note'
 
@@ -9,7 +9,6 @@ const App = () => {
   const [notes, setNotes] = useState()
 
   useEffect(() => {
-    console.log('use effect is in use')
     fetch('http://localhost:8080/getnotes')
       .then((result) => result.json())
       .then((fetchedNotes) => {
@@ -27,8 +26,9 @@ const App = () => {
           <nav>
             <Link to='/form'>+</Link>
             {notes.map((note, index) => (
-              <Link key={notes[index].id} to={note.slug}>
+              <Link key={notes[index].id} to={`/slug/${note.slug}`}>
                 {note.title}
+                <input type='hidden' slug={note.slug} id={note.id}></input>
               </Link>
             ))}
           </nav>
@@ -41,10 +41,10 @@ const App = () => {
           /> */}
           <Switch>
             <Route path='/form'>
-              <Form />
+              <Form setNotes={setNotes} />
             </Route>
-            <Route path='/'>
-              <Note note={notes[0]} />
+            <Route path='/slug/:slug'>
+              <Note note={notes} />
             </Route>
           </Switch>
         </section>
