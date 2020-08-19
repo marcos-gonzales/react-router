@@ -1,31 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const Note = ({ note, setNotes }) => {
+const Note = () => {
   const { pathname } = useLocation()
-  let correctNote
+  const [note, setNote] = useState()
+
+  console.log(pathname)
 
   useEffect(() => {
-    fetch(`http://localhost:8080/slug/${note.slug}`)
+    fetch(`http://localhost:8080${pathname}`)
       .then((result) => result.json())
-      .then((fetchedNotes) => {
-        setNotes(fetchedNotes)
+      .then((fetchedNote) => {
+        setNote(fetchedNote[0])
         console.log(note)
       })
   }, [pathname])
 
-  note.forEach((singleNote) => {
-    if ('/slug/' + singleNote.slug === pathname) {
-      correctNote = singleNote
-    }
-  })
+  if (!note) return <p>no note!</p>
 
   return (
     <div>
       <h1>path:{pathname}</h1>
-      <p>{correctNote.title}</p>
-      <p>{correctNote.content}</p>
-      <input type='hidden' id={correctNote.id} slug={correctNote.slug}></input>
+      <p>{note.title}</p>
+      <p>{note.content}</p>
+      <input type='hidden' id={note.id} slug={note.slug}></input>
     </div>
   )
 }
