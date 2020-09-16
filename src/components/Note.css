@@ -1,0 +1,78 @@
+.editable.active {
+  border: solid 1px #f2f2f2;
+  outline: none;
+}
+
+.editable::before {
+  content: attr(placeholder);
+  display: block;
+  position: absolute;
+  color: #ccc;
+  z-index: 0;
+}
+
+.editable {
+  display: block;
+}
+
+.balloon-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.balloon-container-none {
+  display: none;
+}
+
+.balloon-string-display {
+  padding-right: 50px;
+}
+
+.balloon {
+  display: block;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.balloon-string {
+  display: block;
+  margin: 0 75px 0 0;
+  padding: 0;
+  transform: rotate(180deg);
+}
+
+.balloon-primary {
+  display: block;
+  animation-name: balloon-primary;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+}
+
+@keyframes balloon-primary {
+  0% {
+    margin-top: 700px;
+    padding-left: 80px;
+  }
+  20% {
+    margin-top: 550px;
+    padding: 0;
+  }
+  40% {
+    margin-top: 400x;
+    padding-left: 80px;
+  }
+  60% {
+    margin-top: 250px;
+    padding: 0;
+  }
+  80% {
+    margin-top: 100px;
+    padding-left: 80px;
+  }
+  100% {
+    margin-top: 100px;
+    padding: 0;
+  }
+}

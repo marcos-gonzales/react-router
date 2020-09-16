@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 const Form = ({ setNotes }) => {
-  const [title, setTitle] = useState('')
-  const [slug, setSlug] = useState('')
-  const [content, setContent] = useState('')
+  const [title, setTitle] = useState()
+  const [slug, setSlug] = useState()
+  const [content, setContent] = useState()
   const [errors, setErrors] = useState()
+  const history = useHistory()
 
   const body = {
     slug: slug,
@@ -25,13 +27,12 @@ const Form = ({ setNotes }) => {
       .then((results) => {
         return results.json()
       })
-      .then((notes) => {
-        if (notes.slug) {
-          console.log('this is results after json()', notes)
-          setNotes(notes.slug)
+      .then((note) => {
+        if (note.slug) {
+          console.log('this is results after json()', note)
+          history.push('/slug/' + note.slug)
         }
-        console.log(notes)
-        setErrors(notes.errors)
+        setErrors(note.errors)
       })
       .catch((error) => console.log(error))
   }
@@ -51,10 +52,11 @@ const Form = ({ setNotes }) => {
         <label>
           title:
           <input
+            style={{ borderColor: title ? 'black' : 'red' }}
             placeholder='pet oswald...'
             type='text'
             name='title'
-            value={title.value === 0 ? (title.style.color = 'red') : title}
+            value={title}
             required={true}
             onChange={(e) => setTitle(e.target.value)}
           ></input>
@@ -62,10 +64,11 @@ const Form = ({ setNotes }) => {
         <label>
           slug:
           <input
+            style={{ borderColor: title ? 'black' : 'red' }}
             placeholder='oswald...'
             type='text'
             name='slug'
-            value={slug.value === 0 ? (slug.style.color = 'red') : slug}
+            value={slug}
             required={true}
             onChange={(e) => setSlug(e.target.value)}
           ></input>
@@ -73,13 +76,12 @@ const Form = ({ setNotes }) => {
         <label>
           content:
           <textarea
+            style={{ borderColor: title ? 'black' : 'red' }}
             placeholder='pet oswald for 15 minutes daily...'
             name='content'
             required={true}
             onChange={(e) => setContent(e.target.value)}
-            value={
-              content.value === 0 ? (content.style.color = 'red') : content
-            }
+            value={content}
           ></textarea>
           <button onClick={submitPostForm}>submit</button>
         </label>

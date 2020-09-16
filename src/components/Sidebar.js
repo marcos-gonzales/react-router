@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Sidebar = () => {
   const [notes, setNotes] = useState()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     fetch('http://localhost:8080/getnotes')
@@ -10,7 +11,7 @@ const Sidebar = () => {
       .then((fetchedNotes) => {
         setNotes(fetchedNotes)
       })
-  }, [])
+  }, [pathname])
 
   return (
     <nav>

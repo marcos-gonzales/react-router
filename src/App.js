@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
-// import Main from './components/Main'
 import Form from './components/Form'
 import Note from './components/Note'
 import Sidebar from './components/Sidebar'
+import ContentEditable from './components/ContentEditable'
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-const App = () => {
+const App = (e) => {
+  function testingOne() {
+    return <h1>Welcome testing one</h1>
+  }
+
+  function testingTwo() {
+    return <h1>Welcome testing two</h1>
+  }
+
   return (
     <Router>
       <div className='container'>
@@ -14,9 +22,14 @@ const App = () => {
         <section>
           <Sidebar />
           <Switch>
-            <Route path='/form'>{/* <Form setNotes={setNotes} /> */}</Route>
+            <Route path='/form'>
+              <Form />
+            </Route>
             <Route path='/slug/:slug'>
-              <Note />
+              <div>
+                <Note />
+                <ContentEditable />
+              </div>
             </Route>
           </Switch>
         </section>
