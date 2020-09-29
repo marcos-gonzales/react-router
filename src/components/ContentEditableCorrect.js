@@ -16,102 +16,18 @@ const ContentEditable = () => {
     test: false,
   })
 
-  const [instanceEditable, setInstanceEditable] = useState({
-    newEditable: false,
-    test: false,
-  })
-
-  const divCont = useRef(null)
-
   useEffect(() => {
-    if (editable.value) {
-      setEditable({
-        ...editable,
-        placeholder: '',
-      })
-    }
-
     if (editable.test) {
-      setTimeout(function () {
-        divCont.current.focus()
-        console.log(divCont.current.focus())
-        console.log('this is working')
-      }, 200)
-      setEditable({
-        ...editable,
-        test: false,
-      })
+      document.querySelector('.edit').focus()
+      console.log('use effect is in use')
     }
-    if (instanceEditable.test) {
-      setTimeout(function () {
-        divCont.current.focus()
-        console.log(divCont.current.focus())
-      }, 200)
-    }
-  }, [editable.test, instanceEditable.test, editable.value])
+  }, [editable.test])
 
-  const handleChange = (e) => {
-    // CHECK FOR WHITE SPACE FROM EDITABLE.VALUE  // Check for new lines, spaces, return, and tabs.
-    // const placeholder = editable.value ? '' : '/1337 commands'
-
-    setEditable({
-      ...editable,
-      value: e.target.textContent.trim(),
-      // placeholder,
-    })
+  let instanceEditable = {
+    newEditable: false,
   }
 
-  const handleKeyPress = (e) => {
-    // const placeholder = editable.value ? '' : '/1337 commands'
-
-    if (e.charCode === 13 && editable.value === '/balloon') {
-      e.preventDefault()
-
-      setEditable({
-        ...editable,
-        // placeholder,
-        balloonPrimary: true,
-        balloonContainer: true,
-        newEditable: true,
-      })
-      return
-    }
-
-    if (e.charCode === 13) {
-      e.preventDefault()
-
-      setEditable({
-        ...editable,
-        test: true,
-        newEditable: true,
-        // placeholder,
-      })
-      return
-    }
-
-    if (e.charCode === 13 && editable.value === '/blue') {
-      e.preventDefault()
-
-      setEditable({
-        ...editable,
-        // placeholder,
-        // value: e.target.textContent.trim(),
-        blue: true,
-      })
-    }
-
-    if (e.charCode === 13 && !editable.value) {
-      e.preventDefault()
-
-      setEditable({
-        ...editable,
-        newEditable: true,
-        // placeholder,
-        test: true,
-        // value: e.target.textContent.trim(),
-      })
-    }
-  }
+  const { pathname } = useLocation()
 
   const handleBlur = (e) => {
     setEditable({ ...editable, active: false, placeholder: '' })
@@ -122,14 +38,67 @@ const ContentEditable = () => {
 
     setEditable({
       ...editable,
-      placeholder,
       active: true,
+      placeholder,
       value: e.target.textContent.trim(),
     })
   }
 
+  const handleKeyPress = (e) => {
+    console.log(e)
+
+    const placeholder = editable.value ? '' : '/1337 commands'
+
+    if (e.charCode === 13 && editable.value === '/balloon') {
+      e.preventDefault()
+
+      setEditable({
+        ...editable,
+        newEditable: true,
+        balloonPrimary: true,
+        balloonContainer: true,
+        placeholder,
+      })
+    }
+
+    if (e.charCode === 13 && editable.value === '/blue') {
+      e.preventDefault()
+      setEditable({
+        ...editable,
+        value: e.target.textContent.trim(),
+        blue: true,
+      })
+    }
+
+    if (e.charCode === 13 && !editable.value) {
+      e.preventDefault()
+      setEditable({
+        newEditable: true,
+      })
+    }
+
+    if (e.charCode === 13) {
+      e.preventDefault()
+      setEditable({
+        newEditable: true,
+        test: true,
+      })
+    }
+  }
+
+  const handleChange = (e) => {
+    // CHECK FOR WHITE SPACE FROM EDITABLE.VALUE  // Check for new lines, spaces, return, and tabs.
+    const placeholder = editable.value ? '' : '/1337 commands'
+
+    setEditable({
+      ...editable,
+      value: e.target.textContent.trim(),
+      placeholder,
+    })
+  }
+
   const DivContent = (e) => {
-    const [divEditable, setDivEditable] = useState({
+    const [instanceEditable, setInstanceEditable] = useState({
       balloonContainer: false,
       ballonStringDisplay: false,
       balloonPrimary: false,
@@ -137,121 +106,94 @@ const ContentEditable = () => {
       placeholder: '',
       balloon: false,
       balloonString: false,
-      value: '',
       newEditable: false,
-      test: false,
+      value: '',
     })
 
-    useEffect(() => {
-      if (divEditable.value) {
-        setDivEditable({
-          ...divEditable,
-          placeholder: '',
-        })
-      } else {
-        setDivEditable({
-          ...divEditable,
-          placeholder: '/1337 commands',
-        })
-      }
-    }, [divEditable.value])
+    // useEffect(() => {}, [setInstanceEditable.value])
 
     const handleThisBlur = (e) => {
-      setDivEditable({
-        ...divEditable,
+      const placeholder = instanceEditable.value ? '' : '/1337commands'
+
+      setInstanceEditable({
+        ...instanceEditable,
         active: false,
-        placeholder: '',
+        placeholder,
+        value: e.target.textContent.trim(),
       })
     }
 
     const handleThisFocus = (e) => {
-      const placeholder = divEditable.value ? '' : '/1337 commands'
+      const placeholder = instanceEditable.value ? '' : '/1337 commands'
 
-      setDivEditable({
-        ...divEditable,
+      setInstanceEditable({
+        ...instanceEditable,
         active: true,
         placeholder,
-        newEditable: false,
       })
     }
 
     const handleThisKeyPress = (e) => {
-      const placeholder = divEditable.value ? '' : '/1337 commands'
+      const placeholder = instanceEditable.value ? '' : '/1337 commands'
 
-      setDivEditable({
-        ...divEditable,
+      setInstanceEditable({
+        ...instanceEditable,
+        value: e.target.textContent.trim(),
       })
-      if (e.charCode === 13 && divEditable.value === '/balloon') {
-        e.preventDefault()
 
-        setDivEditable({
-          ...divEditable,
-          placeholder,
-          newEditable: true,
-          balloonPrimary: true,
-          balloonContainer: true,
-        })
-        return
-      }
-      if (e.charCode === 13 && divEditable.value === '/blue') {
+      if (e.charCode === 13 && instanceEditable.value === '/balloon') {
         e.preventDefault()
-
-        setDivEditable({
-          ...divEditable,
-          blue: true,
-        })
-        return
-      }
-      if (e.charCode === 13 && !divEditable.value) {
-        e.preventDefault()
-
-        setDivEditable({
-          ...divEditable,
-          newEditable: true,
-        })
-        return
-      }
-      if (e.charCode === 13) {
-        e.preventDefault()
-
-        setDivEditable({
-          ...divEditable,
-          newEditable: true,
-        })
 
         setInstanceEditable({
           ...instanceEditable,
           newEditable: true,
-          test: true,
+          balloonPrimary: true,
+          balloonContainer: true,
+          placeholder,
         })
+      }
 
-        if (instanceEditable.test === true) {
-          setInstanceEditable({
-            ...instanceEditable,
-            test: false,
-          })
-        }
+      if (e.charCode === 13 && instanceEditable.value === '/blue') {
+        e.preventDefault()
+        setInstanceEditable({
+          ...instanceEditable,
+          value: e.target.textContent.trim(),
+          blue: true,
+        })
+      }
 
-        return
+      if (e.charCode === 13 && !instanceEditable.value) {
+        e.preventDefault()
+        setInstanceEditable({
+          ...instanceEditable,
+          newEditable: true,
+        })
+      }
+
+      if (e.charCode === 13) {
+        e.preventDefault()
+        setInstanceEditable({
+          ...instanceEditable,
+          newEditable: true,
+        })
       }
     }
 
     const handleThisChange = (e) => {
       // CHECK FOR WHITE SPACE FROM EDITABLE.VALUE  // Check for new lines, spaces, return, and tabs.
-      const placeholder = divEditable.value ? '' : '/1337 commands'
-
-      setDivEditable({
-        ...divEditable,
+      const placeholder = instanceEditable.value ? '' : '/1337 commands'
+      setInstanceEditable({
+        ...instanceEditable,
         value: e.target.textContent.trim(),
         placeholder,
       })
     }
 
     return (
-      <div className={divEditable.balloonPrimary ? 'balloon-primary' : ''}>
+      <div className={instanceEditable.balloonPrimary ? 'balloon-primary' : ''}>
         <div
           className={
-            divEditable.balloonContainer
+            instanceEditable.balloonContainer
               ? 'balloon-container'
               : 'balloon-container-none'
           }
@@ -267,16 +209,16 @@ const ContentEditable = () => {
           </div>
         </div>
         <div
-          tabIndex='0'
-          className={divEditable.active ? 'editable active' : 'editable edit'}
+          className={
+            instanceEditable.active ? 'editable active' : 'editable edit'
+          }
           contentEditable='true'
-          placeholder={divEditable.placeholder}
+          placeholder={instanceEditable.placeholder}
           style={{ width: '100%', padding: '3px 2px' }}
           onFocus={handleThisFocus}
           onInput={handleThisChange}
           onKeyPress={handleThisKeyPress}
           onBlur={handleThisBlur}
-          ref={divCont}
         ></div>
       </div>
     )
@@ -302,7 +244,6 @@ const ContentEditable = () => {
         </div>
       </div>
       <div
-        tabIndex='0'
         className={editable.active ? 'editable active' : 'editable'}
         contentEditable='true'
         placeholder={editable.placeholder}
@@ -313,7 +254,9 @@ const ContentEditable = () => {
         onKeyPress={handleKeyPress}
       ></div>
       {editable.newEditable ? <DivContent /> : ''}
-      {instanceEditable.newEditable ? <DivContent /> : ''}
+      {/* {instanceEditable.newEditable
+        ? console.log('working')
+        : console.log('not working')} */}
     </div>
   )
 }

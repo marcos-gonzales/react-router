@@ -1,5 +1,5 @@
 .editable.active {
-  border: solid 1px #f2f2f2;
+  border: solid 10px #f2f2f2;
   outline: none;
 }
 
@@ -13,6 +13,8 @@
 
 .editable {
   display: block;
+  height: 100px;
+  width: 200px;
 }
 
 .balloon-container {
@@ -75,4 +77,8 @@
     margin-top: 100px;
     padding: 0;
   }
+}
+
+.blue {
+  color: blue;
 }
